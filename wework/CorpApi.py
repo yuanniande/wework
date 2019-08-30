@@ -1,5 +1,6 @@
 from .AbstractApi import AbstractApi
 
+
 CORP_API_TYPE = {
         'GET_ACCESS_TOKEN' : ['/cgi-bin/gettoken', 'GET'],
         'USER_CREATE' 	   : ['/cgi-bin/user/create?access_token=ACCESS_TOKEN', 'POST'],
@@ -75,17 +76,16 @@ class CorpApi(AbstractApi) :
         self.secret = secret
         self.access_token = None
 
-    def getAccessToken(self) :
-        if self.access_token is None :
-            self.refreshAccessToken()
+    def get_access_token(self) :
+        if not self.access_token:
+            self.refresh_access_token()
         return self.access_token
 
-    def refreshAccessToken(self) :
+    def refresh_access_token(self) :
         response = self.httpCall(
-                CORP_API_TYPE['GET_ACCESS_TOKEN'],
-                {
-                    'corpid'    :   self.corpid,
-                    'corpsecret':   self.secret,
-                })
+            CORP_API_TYPE['GET_ACCESS_TOKEN'],
+            {
+                'corpid'    :   self.corpid,
+                'corpsecret':   self.secret,
+            })
         self.access_token = response.get('access_token')
-

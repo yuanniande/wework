@@ -1,17 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-##
- # Copyright (C) 2018 All rights reserved.
- #   
- # @File ServiceProviderApi.py
- # @Brief 
- # @Author abelzhu, abelzhu@tencent.com
- # @Version 1.0
- # @Date 2018-02-26
- #
- #
- 
-from AbstractApi import *
+from .AbstractApi import *
 
 SERVICE_PROVIDER_API_TYPE = { 
         'GET_PROVIDER_TOKEN': ['/cgi-bin/service/get_provider_token', 'POST'],
@@ -21,6 +8,7 @@ SERVICE_PROVIDER_API_TYPE = {
         'SET_AGENT_SCOPE'   : ['/cgi-bin/agent/set_scope', 'POST'], ### TODO 
         'SET_CONTACT_SYNC_SUCCESS' : ['/cgi-bin/sync/contact_sync_success', 'GET'],
 }
+
 
 class ServiceProviderApi(AbstractApi) :
     def __init__(self, corpid, provider_secret) :
@@ -42,4 +30,3 @@ class ServiceProviderApi(AbstractApi) :
                     'provider_secret':   self.provider_secret, 
                 })
         self.provider_access_token = response.get('provider_access_token') 
-

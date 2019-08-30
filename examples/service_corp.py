@@ -12,7 +12,7 @@ try:
     pre_auth_code = api.httpCall(SERVICE_CORP_API_TYPE['GET_PRE_AUTH_CODE']).get('pre_auth_code')
     print(pre_auth_code)
 except ApiException as e:
-    print(e.errCode, e.errMsg)
+    print(e.err_code, e.err_msg)
 
 ## 第三方服务商使用永久授权码调用企业接口的方法
 api = ServiceCorpApi(
@@ -30,4 +30,4 @@ try:
         })
     print(response)
 except ApiException as e:
-    print(e.errCode, e.errMsg)
+    print(e.err_code, e.err_msg)

@@ -1,6 +1,7 @@
 from wework.AbstractApi import ApiException
-from wework.CorpApi import *
-from .conf import *
+from wework.CorpApi import CorpApi, CORP_API_TYPE
+
+from conf import TestConf
 
 api = CorpApi(TestConf['CORP_ID'], TestConf['APP_SECRET'])
 
@@ -13,4 +14,4 @@ try:
         })
     print(response)
 except ApiException as e:
-    print(e.errCode, e.errMsg)
+    print(e.err_code, e.err_msg)

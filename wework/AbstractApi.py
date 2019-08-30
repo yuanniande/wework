@@ -1,20 +1,18 @@
 import json
 import requests
 
-from conf import DEBUG
-
 
 class ApiException(Exception):
-    def __init__(self, errCode, errMsg):
-        self.errCode = errCode
-        self.errMsg = errMsg
+    def __init__(self, err_code, err_msg):
+        self.err_code = err_code
+        self.err_msg = err_msg
 
 
 class AbstractApi(object):
-    def getAccessToken(self):
+    def get_access_token(self):
         raise NotImplementedError
 
-    def refreshAccessToken(self):
+    def refresh_access_token(self):
         raise NotImplementedError
 
     def getSuiteAccessToken(self):
@@ -29,33 +27,31 @@ class AbstractApi(object):
     def refreshProviderAccessToken(self):
         raise NotImplementedError
 
-    def httpCall(self, urlType, args=None):
-        shortUrl = urlType[0]
-        method = urlType[1]
+    def httpCall(self, url_type, args=None):
+        path, method = url_type
         response = {}
         for retryCnt in range(0, 3):
             if 'POST' == method:
-                url = self.__makeUrl(shortUrl)
-                response = self.__httpPost(url, args)
+                url = self.__make_url(path)
+                response = self.__http_post(url, args)
             elif 'GET' == method:
-                url = self.__makeUrl(shortUrl)
-                url = self.__appendArgs(url, args)
-                response = self.__httpGet(url)
+                url = self.__make_url(path)
+                url = self.__append_args(url, args)
+                response = self.__http_get(url)
             else:
                 raise ApiException(-1, "unknown method type")
 
             # check if token expired
-            if self.__tokenExpired(response.get('errcode')):
-                self.__refreshToken(shortUrl)
+            if self.__token_expired(response.get('errcode')):
+                self.__refresh_token(path)
                 retryCnt += 1
                 continue
             else:
                 break
-
-        return self.__checkResponse(response)
+        return self.__check_response(response)
 
     @staticmethod
-    def __appendArgs(url, args):
+    def __append_args(url, args):
         if args is None:
             return url
 
@@ -67,63 +63,56 @@ class AbstractApi(object):
         return url
 
     @staticmethod
-    def __makeUrl(shortUrl):
+    def __make_url(path):
         base = "https://qyapi.weixin.qq.com"
-        if shortUrl[0] == '/':
-            return base + shortUrl
+        if path[0] == '/':
+            return base + path
         else:
-            return base + '/' + shortUrl
+            return base + '/' + path
 
-    def __appendToken(self, url):
+    def __append_token(self, url):
         if 'SUITE_ACCESS_TOKEN' in url:
             return url.replace('SUITE_ACCESS_TOKEN', self.getSuiteAccessToken())
         elif 'PROVIDER_ACCESS_TOKEN' in url:
             return url.replace('PROVIDER_ACCESS_TOKEN', self.getProviderAccessToken())
         elif 'ACCESS_TOKEN' in url:
-            return url.replace('ACCESS_TOKEN', self.getAccessToken())
+            return url.replace('ACCESS_TOKEN', self.get_access_token())
         else:
             return url
 
-    def __httpPost(self, url, args):
-        realUrl = self.__appendToken(url)
+    def __http_post(self, url, args):
+        real_url = self.__append_token(url)
+        return requests.post(real_url, data=json.dumps(args, ensure_ascii=False).encode('utf-8')).json()
 
-        if DEBUG is True:
-            print(realUrl, args)
+    def __http_get(self, url):
+        real_url = self.__append_token(url)
+        return requests.get(real_url).json()
 
-        return requests.post(realUrl, data=json.dumps(args, ensure_ascii=False).encode('utf-8')).json()
-
-    def __httpGet(self, url):
-        realUrl = self.__appendToken(url)
-
-        if DEBUG is True:
-            print(realUrl)
-
-        return requests.get(realUrl).json()
-
-    def __post_file(self, url, media_file):
+    @staticmethod
+    def __post_file(url, media_file):
         return requests.post(url, file=media_file).json()
 
     @staticmethod
-    def __checkResponse(response):
-        errCode = response.get('errcode')
-        errMsg = response.get('errmsg')
+    def __check_response(response):
+        err_code = response.get('errcode')
+        err_msg = response.get('errmsg')
 
-        if errCode is 0:
+        if err_code is 0:
             return response
         else:
-            raise ApiException(errCode, errMsg)
+            raise ApiException(err_code, err_msg)
 
     @staticmethod
-    def __tokenExpired(errCode):
-        if errCode == 40014 or errCode == 42001 or errCode == 42007 or errCode == 42009:
+    def __token_expired(err_code):
+        if err_code == 40014 or err_code == 42001 or err_code == 42007 or err_code == 42009:
             return True
         else:
             return False
 
-    def __refreshToken(self, url):
+    def __refresh_token(self, url):
         if 'SUITE_ACCESS_TOKEN' in url:
             self.refreshSuiteAccessToken()
         elif 'PROVIDER_ACCESS_TOKEN' in url:
             self.refreshProviderAccessToken()
         elif 'ACCESS_TOKEN' in url:
-            self.refreshAccessToken()
+            self.refresh_access_token()

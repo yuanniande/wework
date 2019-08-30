@@ -1,11 +1,8 @@
-#!/usr/bin/env python
 #-*- encoding:utf-8 -*-
 
 """ 对企业微信发送给企业后台的消息加解密示例代码.
 @copyright: Copyright (c) 1998-2014 Tencent Inc.
-
 """
-# ------------------------------------------------------------------------
 
 import base64
 import string
@@ -14,12 +11,10 @@ import hashlib
 import time
 import struct
 from Crypto.Cipher import AES
-import xml.etree.cElementTree as ET  
-import sys                                                                                                                                                                             
+import sys
 import socket
-stdi,stdo,stde=sys.stdin,sys.stdout,sys.stderr 
+import xml.etree.cElementTree as ET
 reload(sys)
-sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde
 import ierror 
 sys.setdefaultencoding('utf-8') 
 
@@ -229,10 +224,10 @@ class WXBizMsgCrypt(object):
 	
     def EncryptMsg(self, sReplyMsg, sNonce, timestamp = None):
         #将企业回复用户的消息加密打包
-        #@param sReplyMsg: 企业号待回复用户的消息，xml格式的字符串
+        #@param sReplyMsg: 企业号待回复用户的消息，对应格式的字符串
         #@param sTimeStamp: 时间戳，可以自己生成，也可以用URL参数的timestamp,如为None则自动用当前时间
         #@param sNonce: 随机串，可以自己生成，也可以用URL参数的nonce
-        #sEncryptMsg: 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的xml格式的字符串,
+        #sEncryptMsg: 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的对应格式的字符串,
         #return：成功0，sEncryptMsg,失败返回对应的错误码None     
         pc = Prpcrypt(self.key) 
         ret,encrypt = pc.encrypt(sReplyMsg, self.m_sReceiveId)
@@ -270,5 +265,3 @@ class WXBizMsgCrypt(object):
         pc = Prpcrypt(self.key)
         ret,xml_content = pc.decrypt(encrypt,self.m_sReceiveId)
         return ret,xml_content 
-
-

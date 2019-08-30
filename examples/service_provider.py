@@ -12,4 +12,4 @@ try :
             })
     print(response)
 except ApiException as e :
-    print(e.errCode, e.errMsg)
+    print(e.err_code, e.err_msg)

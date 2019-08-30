@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#########################################################################
-# Author: jonyqin
-# Created Time: Thu 11 Sep 2014 03:55:41 PM CST
-# File Name: Sample.py
-# Description: WXBizMsgCrypt 使用demo文件
-#########################################################################
-from .WXBizMsgCrypt import WXBizMsgCrypt
+#-*- encoding:utf-8 -*-
+from __future__ import print_function
 import xml.etree.cElementTree as ET
 import sys
+from .WXBizMsgCrypt import WXBizMsgCrypt
 
 if __name__ == "__main__":   
    #假设企业在企业微信后台上设置的参数如下
@@ -41,7 +35,7 @@ if __name__ == "__main__":
    sVerifyEchoStr="fsi1xnbH4yQh0+PJxcOdhhK6TDXkjMyhEPA7xB2TGz6b+g7xyAbEkRxN/3cNXW9qdqjnoVzEtpbhnFyq6SVHyA=="
    ret,sEchoStr=wxcpt.VerifyURL(sVerifyMsgSig, sVerifyTimeStamp,sVerifyNonce,sVerifyEchoStr)
    if(ret!=0):
-      print "ERR: VerifyURL ret: " + str(ret)
+      print("ERR: VerifyURL ret: " + str(ret))
       sys.exit(1)
    #验证URL成功，将sEchoStr返回给企业号
    #HttpUtils.SetResponse(sEchoStr)
@@ -67,16 +61,16 @@ if __name__ == "__main__":
    sReqNonce = "1597212914"
    sReqData = "<xml><ToUserName><![CDATA[ww1436e0e65a779aee]]></ToUserName>\n<Encrypt><![CDATA[Kl7kjoSf6DMD1zh7rtrHjFaDapSCkaOnwu3bqLc5tAybhhMl9pFeK8NslNPVdMwmBQTNoW4mY7AIjeLvEl3NyeTkAgGzBhzTtRLNshw2AEew+kkYcD+Fq72Kt00fT0WnN87hGrW8SqGc+NcT3mu87Ha3dz1pSDi6GaUA6A0sqfde0VJPQbZ9U+3JWcoD4Z5jaU0y9GSh010wsHF8KZD24YhmZH4ch4Ka7ilEbjbfvhKkNL65HHL0J6EYJIZUC2pFrdkJ7MhmEbU2qARR4iQHE7wy24qy0cRX3Mfp6iELcDNfSsPGjUQVDGxQDCWjayJOpcwocugux082f49HKYg84EpHSGXAyh+/oxwaWbvL6aSDPOYuPDGOCI8jmnKiypE+]]></Encrypt>\n<AgentID><![CDATA[1000002]]></AgentID>\n</xml>"
    ret,sMsg=wxcpt.DecryptMsg( sReqData, sReqMsgSig, sReqTimeStamp, sReqNonce)
-   print ret,sMsg
+   print(ret,sMsg)
    if( ret!=0 ):
-      print "ERR: DecryptMsg ret: " + str(ret)
+      print("ERR: DecryptMsg ret: " + str(ret))
       sys.exit(1)
    # 解密成功，sMsg即为xml格式的明文
    # TODO: 对明文的处理
    # For example:
    xml_tree = ET.fromstring(sMsg)
    content = xml_tree.find("Content").text
-   print content
+   print(content)
    # ...
    # ...
    
@@ -101,7 +95,7 @@ if __name__ == "__main__":
    sRespData = "<xml><ToUserName>ww1436e0e65a779aee</ToUserName><FromUserName>ChenJiaShun</FromUserName><CreateTime>1476422779</CreateTime><MsgType>text</MsgType><Content>你好</Content><MsgId>1456453720</MsgId><AgentID>1000002</AgentID></xml>"
    ret,sEncryptMsg=wxcpt.EncryptMsg(sRespData, sReqNonce, sReqTimeStamp)
    if( ret!=0 ):
-      print "ERR: EncryptMsg ret: " + str(ret)
+      print("ERR: EncryptMsg ret: " + str(ret))
       sys.exit(1)
    #ret == 0 加密成功，企业需要将sEncryptMsg返回给企业号
    #TODO:
