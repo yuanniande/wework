@@ -12,7 +12,8 @@ setup(
     version="0.1.3",
     packages=find_packages(),
     install_requires=[
-        'requests>=2.12.4'
+        'requests>=2.12.4',
+        'pycrypto>=2.6'
     ],
     description="Official lib of wework.",
     long_description=read('README.md'),

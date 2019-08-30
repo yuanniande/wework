@@ -1,6 +1,7 @@
+#-*- encoding:utf-8 -*-
 from __future__ import print_function
-from .WXBizMsgCrypt import WXBizMsgCrypt
 import sys
+from wework.WXBizMsgCrypt import WXBizMsgCrypt
 
 if __name__ == "__main__":   
    #假设企业在企业微信后台上设置的参数如下
