@@ -6,7 +6,7 @@
 # File Name: Sample.py
 # Description: WXBizMsgCrypt 使用demo文件
 #########################################################################
-from WXBizMsgCrypt import WXBizMsgCrypt
+from .WXBizMsgCrypt import WXBizMsgCrypt
 import xml.etree.cElementTree as ET
 import sys
 
