@@ -13,14 +13,11 @@ pip install -U wework
 
 # A Simple Example
 
-```
+```python
 from wework.CorpApi import CorpApi, CORP_API_TYPE
 api = CorpApi(TestConf['CORP_ID'], TestConf['APPROVAL_APP_SECRET'])
-response = api.httpCall(CORP_API_TYPE['GET_APPROVAL_DATA'],
-                                {
-                                    "starttime": 1566871220,
-                                    "endtime": 1566874224
-                                })
+params = {"starttime": 1566871220, "endtime": 1566874224}
+response = api.httpCall(CORP_API_TYPE['GET_APPROVAL_DATA'], params)
 ```
 
 详细使用方法参考examples路径下的样例
