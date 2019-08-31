@@ -17,5 +17,5 @@ setup(
     ],
     description="Official lib of wework.",
     long_description=read('README.md'),
-    url='https://work.weixin.qq.com/api/doc'
+    url='https://github.com/iamsk/wework'
 )
