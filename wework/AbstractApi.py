@@ -80,6 +80,12 @@ class AbstractApi(object):
         else:
             return url
 
+    def _append_token(self, url):
+        return self.__append_token(url)
+
+    def _make_url(self, path):
+        return self.__make_url(path)
+
     def __http_post(self, url, args):
         real_url = self.__append_token(url)
         return requests.post(real_url, data=json.dumps(args, ensure_ascii=False).encode('utf-8')).json()
